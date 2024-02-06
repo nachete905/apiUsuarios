@@ -13,7 +13,7 @@ $respuesta = new Response();
 
 if (strpos($ruta, '/apiUsuarios/id') === 0) {
     if ($metodo == 'GET') {
-        if (preg_match('/^\/apiUsuarios\/id\/\d+$/', $ruta, $parametros)) {
+        if (preg_match('/^\/apiUsuarios\/id\/(\d+)$/', $ruta, $parametros)) {
             $id = $parametros[1];
             $result = ControlUsuarios::obtenerUsuarios($id);
             echo $result;
@@ -34,7 +34,7 @@ if (strpos($ruta, '/apiUsuarios/id') === 0) {
 
 if(strpos($ruta, '/apiUsuarios/insert') === 0){
     if ($metodo == 'POST') {
-        if (preg_match('/^\/apiUsuarios\/insert\/\d+$/', $ruta, $parametros)) {
+        if (preg_match('/^\/apiUsuarios\/insert\/(\w+)\/(\w+)\/(\w+)\/(\w+)\/(\w+)\/(\w+)\/(\w+)\/(\w+)\/(\d+)\/(\w+)\/(\w+)\/$/', $ruta, $parametros)) {
             $nombre = $parametros[1];
             $apellido1 = $parametros[2];
             $apellido2 = $parametros[3];
@@ -47,7 +47,7 @@ if(strpos($ruta, '/apiUsuarios/insert') === 0){
             $direccion = $parametros[10];
             $notificaciones = $parametros[11];
             
-            $result = ControlUsuarios::interstarCliente($nombre, $apellido1, $apellido2, $correo, $password, $dni, $pais, $genero, $fecha_nacimiento, $direccion, $notificaciones);
+            $result = ControlUsuarios::altaCliente();
 
             if($result == -1){
                 $respuesta->error_210();

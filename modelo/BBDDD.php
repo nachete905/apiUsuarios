@@ -3,7 +3,7 @@ class BBDD {
 
     public static function conectar(){
       $server="localhost";
-      $dbname="landinghsf";
+      $dbname="landinghfs";
       $user="nacho1";
       $password="nacho1";
 

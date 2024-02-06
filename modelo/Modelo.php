@@ -1,6 +1,6 @@
 <?php
 require_once("BBDDD.php");
-require_once("CONTROL/Usuario.php");
+require_once("control/Usuario.php");
 
 class Modelo extends BBDD{
 
@@ -10,11 +10,14 @@ class Modelo extends BBDD{
         $sql = $conexion->prepare($sql);
 
         if($sql->execute()){
-            header('HTTPS/1.1 200 Cliente seleccionado');
+            $result = $sql->fetch(PDO::FETCH_ASSOC);
+            if($result){
+                header('HTTPS/1.1 200 Cliente seleccionado');
+                return $result;
+            }
         }else{
             header('HTTPS/1.1 404 Error al seleccionar el cliente');
         }
-           
             
 
         return null;
@@ -24,18 +27,24 @@ class Modelo extends BBDD{
     public static function consultarUsuariosID($id){
         $conexion = BBDD::conectar();
         $sql = "SELECT nombre, apellido1, apellido2, correo FROM usuario WHERE id = :id";
-
         if($id != null){
             $sql = $conexion->prepare($sql);
             $sql->bindParam(":id", $id);
             if($sql->execute()){
-                header('HTTPS/1.1 200 Cliente seleccionado');
+                $result = $sql->fetch(PDO::FETCH_ASSOC);
+                if($result){
+                    header('HTTPS/1.1 200 Cliente seleccionado');
+                    return $result;
+                }
             }else{
                 header('HTTPS/1.1 404 Error al seleccionar el cliente');
             }
+               
         }else{
             return -1;
         }
+   
+
     }
 
     public static function consultarUsuariosNombre($nombre){
@@ -47,14 +56,17 @@ class Modelo extends BBDD{
             $sql->bindParam(":nombre", $nombre);
 
             if($sql->execute()){
-                header('HTTPS/1.1 200 Cliente seleccionado');
+                $result = $sql->fetch(PDO::FETCH_ASSOC);
+                if($result){
+                    header('HTTPS/1.1 200 Cliente seleccionado');
+                    return $result;
+                }
             }else{
                 header('HTTPS/1.1 404 Error al seleccionar el cliente');
             }
                
         }else{
-            
-        return -1;
+            return -1;
         }
         
     }

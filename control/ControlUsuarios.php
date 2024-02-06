@@ -5,7 +5,9 @@ class ControlUsuarios{
         if($id == null){
             return json_encode(Modelo::consultarUsuarios());
         }else{
-            return json_encode(Modelo::consultarUsuariosID($id));
+            $resultado = json_encode(Modelo::consultarUsuariosID($id));
+            return $resultado;
+            var_dump($resultado);
         }
         
     }
@@ -18,15 +20,11 @@ class ControlUsuarios{
         }
         
     }
-
-    public static function interstarCliente($nombre, $apellido1, $apellido2, $correo, $password, $dni=null, $pais=null, $genero=null, $fecha_nacimiento=null,$direccion=null, $notificaciones = null, $id = null){
-        $result = Modelo::insertarUsuario($nombre, $apellido1, $apellido2, $correo, $password, $dni, $pais, $genero, $fecha_nacimiento,$direccion, $notificaciones, $id);
-
-       return json_encode($result);
-        
-        
+    public static function altaCliente(){
+         if(isset($_POST['nombre']) && isset($_POST['apellido1']) && isset($_POST['apellido2']) && isset($_POST['email']) && isset($_POST['password'])){
+            Modelo::insertarUsuario($_POST['nombre'], $_POST['apellido1'], $_POST['apellido2'], $_POST['email'], $_POST['password']);
+         }
     }
-
     public static function elimiarUsuario($id){
         $result = Modelo::borrarUsuario($id);
         if($result == -1){
