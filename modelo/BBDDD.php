@@ -1,20 +1,18 @@
 <?php
-
 class BBDD {
-    private  static $hostname;
-    private  static $usuario;
-    private  static $password;
-    private  static $basededatos;
-    public  function __construct($hostname="localhost", $usuario="prueba", $password="prueba", $basededatos="ApiRest") {
-        self::$hostname = $hostname;
-        self::$usuario = $usuario;
-        self::$password = $password;
-        self::$basededatos = $basededatos;
-    }
 
-    public static function conectar()
-    {
-        return new mysqli("localhost", "nacho1","nacho1","landinghfs");
+    public static function conectar(){
+      $server="localhost";
+      $dbname="landinghsf";
+      $user="nacho1";
+      $password="nacho1";
+
+       try{
+           $connection = new PDO("mysql:host=$server;dbname=$dbname", $user, $password);
+           $connection->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
+           return $connection;
+       } catch(PDOException $e){
+           die("ERROR: ".$e->getMessage());
+       }
     }
 }
-

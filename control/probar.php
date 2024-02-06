@@ -1,8 +1,8 @@
 <?php
 require_once("../modelo/Modelo.php");
-
+require_once("ControlUsuarios.php");
+$control = new ControlUsuarios();
 $modelo = new Modelo();
 
-$user = $modelo::insertarUsuario("nacho","sanz", "mesa","ignacio@gmail.com","test","11087686f", null, null, null, null, null, null);
+$modelo::insertarUsuario("nacho","sanz", "mesa","ignacio@gmail.com","test",null, null, null, null, null, null, null);
 
-echo $user;
