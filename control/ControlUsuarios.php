@@ -19,9 +19,20 @@ class ControlUsuarios{
         
     }
 
-    public static function interstarCliente(){
-        if(isset($_POST['correo']) && isset($_POST['password']) && isset($_POST['name']) && isset($_POST['apellido1']) && isset($_POST['apellido2']) && isset($_POST['dni']) && isset($_POST['pais']) && isset($_POST['genero']) && isset($_POST['fecha_nacimiento']) && isset($_POST['direccion']) && isset($_POST['notificaciones'])){
-            Modelo::insertarUsuario($_POST['correo'], $_POST['password'], $_POST['name'], $_POST['apellido1'], $_POST['apellido2'], $_POST['dni'], $_POST['pais'], $_POST['genero'], $_POST['fecha_nacimiento'], $_POST['direccion'], $_POST['notificaciones']);
+    public static function interstarCliente($nombre, $apellido1, $apellido2, $correo, $password, $dni=null, $pais=null, $genero=null, $fecha_nacimiento=null,$direccion=null, $notificaciones = null, $id = null){
+        $result = Modelo::insertarUsuario($nombre, $apellido1, $apellido2, $correo, $password, $dni, $pais, $genero, $fecha_nacimiento,$direccion, $notificaciones, $id);
+
+       return json_encode($result);
+        
+        
+    }
+
+    public static function elimiarUsuario($id){
+        $result = Modelo::borrarUsuario($id);
+        if($result == -1){
+            return -1;
+        }else{
+            return json_encode($result);
         }
         
     }
