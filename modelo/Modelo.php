@@ -12,11 +12,11 @@ class Modelo extends BBDD{
         if($sql->execute()){
             $result = $sql->fetch(PDO::FETCH_ASSOC);
             if($result){
-                header('HTTPS/1.1 200 Cliente seleccionado');
+                header('HTTP/1.1 200 Cliente seleccionado');
                 return $result;
             }
         }else{
-            header('HTTPS/1.1 404 Error al seleccionar el cliente');
+            header('HTTP/1.1 404 Error al seleccionar el cliente');
         }
             
 
@@ -33,11 +33,11 @@ class Modelo extends BBDD{
             if($sql->execute()){
                 $result = $sql->fetch(PDO::FETCH_ASSOC);
                 if($result){
-                    header('HTTPS/1.1 200 Cliente seleccionado');
+                    header('HTTP/1.1 200 Cliente seleccionado');
                     return $result;
                 }
             }else{
-                header('HTTPS/1.1 404 Error al seleccionar el cliente');
+                header('HTTP/1.1 404 Error al seleccionar el cliente');
             }
                
         }else{
@@ -58,11 +58,11 @@ class Modelo extends BBDD{
             if($sql->execute()){
                 $result = $sql->fetch(PDO::FETCH_ASSOC);
                 if($result){
-                    header('HTTPS/1.1 200 Cliente seleccionado');
+                    header('HTTP/1.1 200 Cliente seleccionado');
                     return $result;
                 }
             }else{
-                header('HTTPS/1.1 404 Error al seleccionar el cliente');
+                header('HTTP/1.1 404 Error al seleccionar el cliente');
             }
                
         }else{
@@ -89,9 +89,9 @@ class Modelo extends BBDD{
         $sql->bindParam(":notificaciones", $notificaciones);
 
         if($sql->execute()){
-            header('HTTPS/1.1 200 Cliente creado');
+            header('HTTP/1.1 200 Cliente creado');
         }else{
-            header('HTTPS/1.1 404 Error al crear el cliente');
+            header('HTTP/1.1 404 Error al crear el cliente');
         }
     }
 
@@ -102,9 +102,9 @@ class Modelo extends BBDD{
         if($id != null){
             $sql->bindParam(":id", $id);
             if($sql->execute()){
-                header('HTTPS/1.1 200 Cliente borrado');
+                header('HTTP/1.1 200 Cliente borrado');
             }else{
-                header('HTTPS/1.1 404 Error al borrar el cliente');
+                header('HTTP/1.1 404 Error al borrar el cliente');
             }
         }else{
             return -1;
