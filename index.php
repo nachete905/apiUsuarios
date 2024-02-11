@@ -68,7 +68,8 @@ if (strpos($ruta, '/apiUsuarios/insert') === 0) {
 
 if (strpos($ruta, '/apiUsuarios/delete') === 0) {
     if ($metodo == 'DELETE') {
-        if (preg_match('/^\/apiUsuarios\/delete\/\d+$/', $ruta, $parametros)) {
+        $patron = '/^\/apiUsuarios\/delete\/id\/(\d+)$/';
+        if (preg_match($patron, $ruta, $parametros)) {
             $id = $parametros[1];
             $result = ControlUsuarios::elimiarUsuario($id);
             if ($result == -1) {
