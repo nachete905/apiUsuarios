@@ -24,75 +24,62 @@ if (strpos($ruta, '/apiUsuarios/id') === 0) {
                 $respuesta->error_210();
                 $respuesta->JsonSalida();
             }
-        } else{
+        } else {
             echo ControlUsuarios::obtenerUsuarios();
         }
-            
-    }else{
+    } else {
         $respuesta->error_405();
         $respuesta->JsonSalida();
     }
 }
 
-if(strpos($ruta, '/apiUsuarios/insert') === 0){
+if (strpos($ruta, '/apiUsuarios/insert') === 0) {
     if ($metodo == 'POST') {
+        $datos = json_decode(file_get_contents('php://input'));
+        $result = ControlUsuarios::altaCliente(
+            isset($datos->nombre) ? $datos->nombre : null,
+            isset($datos->apellido1) ? $datos->apellido1 : null,
+            isset($datos->apellido2) ? $datos->apellido2 : null,
+            isset($datos->correo) ? $datos->correo : null,
+            isset($datos->password) ? $datos->password : null,
+            isset($datos->dni) ? $datos->dni : null,
+            isset($datos->pais) ? $datos->pais : null,
+            isset($datos->genero) ? $datos->genero : null,
+            isset($datos->fecha_nacimiento) ? $datos->fecha_nacimiento : null,
+            isset($datos->direccion) ? $datos->direccion : null,
+            isset($datos->notificaciones) ? $datos->notificaciones : null,
+            $id = null
+        );
 
-        $patron = '/^\/apiUsuarios\/insert\/(\w+)\/(\w+)\/(\w+)\/(\w+)\/(\w+)\/(\w+)\/(\w+)\/(\w+)\/(\d+)\/(\w+)\/(\w+)\/$/';
-        
-        if (preg_match($patron, $ruta, $parametros)) {
-           
-            $nombre = $parametros[1];
-            $apellido1 = $parametros[2];
-            $apellido2 = $parametros[3];
-            $correo = $parametros[4];
-            $password = $parametros[5];
-            $dni = $parametros[6];
-            $pais = $parametros[7];
-            $genero = $parametros[8];
-            $fecha_nacimiento = $parametros[9];
-            $direccion = $parametros[10];
-            $notificaciones = $parametros[11];
+        if ($result == -1) {
 
-            $result = ControlUsuarios::altaCliente($nombre, $apellido1, $apellido2, $correo, $password, $dni, $pais, $genero, $fecha_nacimiento, $direccion, $notificaciones, $id = null);
-
-            if($result == -1){
-                
-                $respuesta->error_210();
-                $respuesta->JsonSalida();
-            } else {
-               
-                echo $result;
-            }
-           
+            $respuesta->error_210();
+            $respuesta->JsonSalida();
         } else {
-           
-            echo "La ruta no coincide con el patrón esperado.";
-        }    
+
+            echo $result;
+        }
     } else {
-      
+
         echo "El método HTTP no es POST.";
     }
 }
 
 
-if(strpos($ruta, '/apiUsuarios/delete') === 0){
+if (strpos($ruta, '/apiUsuarios/delete') === 0) {
     if ($metodo == 'DELETE') {
         if (preg_match('/^\/apiUsuarios\/delete\/\d+$/', $ruta, $parametros)) {
             $id = $parametros[1];
             $result = ControlUsuarios::elimiarUsuario($id);
-            if($result == -1){
+            if ($result == -1) {
                 $respuesta->error_210();
                 $respuesta->JsonSalida();
-            }else{
+            } else {
                 echo $result;
             }
-           
-        }else{
+        } else {
             $respuesta->error_405();
             $respuesta->JsonSalida();
-        }           
+        }
     }
-
 }
-
-
