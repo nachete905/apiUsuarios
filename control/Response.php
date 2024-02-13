@@ -14,8 +14,4 @@ class Response{
         $this->response["result"] = "recurso no encontrado";
         return $this->response;
     }
-
-    public function JsonSalida(){
-        return json_encode($this->response);
-    }
 }

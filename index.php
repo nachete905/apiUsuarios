@@ -6,11 +6,12 @@ require_once("modelo/Modelo.php");
 require_once("control/Usuario.php");
 require_once("control/ControlUsuarios.php");
 require_once("control/Response.php");
+$respuesta = new Response;
+
 
 header('Content-Type: application/json; charset=utf-8');
 $ruta = $_SERVER['REQUEST_URI'];
 $metodo = $_SERVER['REQUEST_METHOD'];
-$respuesta = new Response();
 
 if (strpos($ruta, '/apiUsuarios/id') === 0) {
     if ($metodo == 'GET') {
@@ -21,15 +22,13 @@ if (strpos($ruta, '/apiUsuarios/id') === 0) {
             echo $result;
 
             if ($result == -1) {
-                $respuesta->error_210();
-                $respuesta->JsonSalida();
+                echo json_encode($respuesta->error_210());
             }
         } else {
             echo ControlUsuarios::obtenerUsuarios();
         }
     } else {
-        $respuesta->error_405();
-        $respuesta->JsonSalida();
+        json_encode($respuesta->error_405());
     }
 }
 
@@ -37,11 +36,11 @@ if (strpos($ruta, '/apiUsuarios/insert') === 0) {
     if ($metodo == 'POST') {
         $datos = json_decode(file_get_contents('php://input'));
         $result = ControlUsuarios::altaCliente(
-            isset($datos->nombre) ? $datos->nombre : null,
-            isset($datos->apellido1) ? $datos->apellido1 : null,
-            isset($datos->apellido2) ? $datos->apellido2 : null,
-            isset($datos->correo) ? $datos->correo : null,
-            isset($datos->password) ? $datos->password : null,
+            $datos->nombre,
+            $datos->apellido1,
+            $datos->apellido2,
+            $datos->correo,
+            $datos->password,
             isset($datos->dni) ? $datos->dni : null,
             isset($datos->pais) ? $datos->pais : null,
             isset($datos->genero) ? $datos->genero : null,
@@ -52,16 +51,14 @@ if (strpos($ruta, '/apiUsuarios/insert') === 0) {
         );
 
         if ($result == -1) {
-
-            $respuesta->error_210();
-            $respuesta->JsonSalida();
+            echo json_encode($respuesta->error_210());
         } else {
 
             echo $result;
         }
     } else {
+        echo json_encode($respuesta->error_405());
 
-        echo "El método HTTP no es POST.";
     }
 }
 
@@ -73,14 +70,32 @@ if (strpos($ruta, '/apiUsuarios/delete') === 0) {
             $id = $parametros[1];
             $result = ControlUsuarios::elimiarUsuario($id);
             if ($result == -1) {
-                $respuesta->error_210();
-                $respuesta->JsonSalida();
+                echo json_encode($respuesta->error_210());
             } else {
                 echo $result;
             }
         } else {
-            $respuesta->error_405();
-            $respuesta->JsonSalida();
+            echo json_encode($respuesta->error_405());
         }
+    }
+}
+
+if (strpos($ruta, '/apiUsuarios/login') === 0) {
+    if ($metodo == 'POST') {
+        $patron = '/^\/apiUsuarios\/login\/$/';
+        if (preg_match($patron, $ruta)){
+
+            $correo = $_POST['correo'];
+            $pswd = $_POST['pswd'];
+            $result = ControlUsuarios::login($correo, $pswd);
+
+            if ($result == -1) {
+                echo json_encode($respuesta->error_210());
+            } else {
+                echo $result;
+            }
+        } 
+    }else {
+        echo json_encode($respuesta->error_405());
     }
 }

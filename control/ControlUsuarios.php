@@ -38,4 +38,14 @@ class ControlUsuarios
             return json_encode($result);
         }
     }
+
+    public static function login($nombre, $pswd){
+        $result = Modelo::login($nombre, $pswd);
+        if ($result == -1) {
+            return -1;
+            echo "123"; 
+        } else {
+            return json_encode($result);            echo "1232"; 
+        }
+    }
 }
