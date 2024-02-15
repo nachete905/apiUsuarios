@@ -14,4 +14,11 @@ class Response{
         $this->response["result"] = "recurso no encontrado";
         return $this->response;
     }
+    public function error_404(){
+        $this->response["status"] = "error";
+        $this->response["result"] = "no encontrado";
+        return $this->response;
+    }
+    
+
 }

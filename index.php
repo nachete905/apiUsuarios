@@ -33,29 +33,37 @@ if (strpos($ruta, '/apiUsuarios/id') === 0) {
 }
 
 if (strpos($ruta, '/apiUsuarios/insert') === 0) {
+    echo "dfgvedfgver";
     if ($metodo == 'POST') {
-        $datos = json_decode(file_get_contents('php://input'));
-        $result = ControlUsuarios::altaCliente(
-            $datos->nombre,
-            $datos->apellido1,
-            $datos->apellido2,
-            $datos->correo,
-            $datos->password,
-            isset($datos->dni) ? $datos->dni : null,
-            isset($datos->pais) ? $datos->pais : null,
-            isset($datos->genero) ? $datos->genero : null,
-            isset($datos->fecha_nacimiento) ? $datos->fecha_nacimiento : null,
-            isset($datos->direccion) ? $datos->direccion : null,
-            isset($datos->notificaciones) ? $datos->notificaciones : null,
-            $id = null
-        );
+        $patron = '/^\/apiUsuarios\/insert/';
+        if(preg_match($patron, $ruta)){
+            $datos = json_decode(file_get_contents('php://input'));
+            $result = ControlUsuarios::altaCliente(
+                $datos->nombre,
+                $datos->apellido1,
+                $datos->apellido2,
+                $datos->correo,
+                $datos->password,
+                isset($datos->dni) ? $datos->dni : null,
+                isset($datos->pais) ? $datos->pais : null,
+                isset($datos->genero) ? $datos->genero : null,
+                isset($datos->fecha_nacimiento) ? $datos->fecha_nacimiento : null,
+                isset($datos->direccion) ? $datos->direccion : null,
+                isset($datos->notificaciones) ? $datos->notificaciones : null,
+                $id = null
+            );
 
-        if ($result == -1) {
-            echo json_encode($respuesta->error_210());
-        } else {
+    
+            if ($result == -1) {
+                echo json_encode($respuesta->error_210());
+                
+            } else {
+    
+                echo $result;
+            }
 
-            echo $result;
         }
+       
     } else {
         echo json_encode($respuesta->error_405());
 
@@ -98,4 +106,39 @@ if (strpos($ruta, '/apiUsuarios/login') === 0) {
     }else {
         echo json_encode($respuesta->error_405());
     }
+}
+
+if(strpos($ruta, '/apiUsuarios/actualizarNombre') === 0){
+    if($metodo == 'PUT'){
+        $patron =  '/^\/apiUsuarios\/actualizarNombre/';
+        if(preg_match($patron, $ruta)){
+            $datos = json_decode(file_get_contents('php://input'));
+            $result = ControlUsuarios::actualizarNombre($datos->nuevoNombre,$datos->id);
+
+            if ($result == -1) {
+                echo json_encode($respuesta->error_210());
+            } else {
+    
+                echo $result;
+            }
+        }
+    }
+}
+
+if(strpos($ruta, '/apiUsuarios/actualizarCorreo') === 0){
+    if($metodo == 'PUT'){
+        $patron =  '/^\/apiUsuarios\/actualizarCorreo/';
+        if(preg_match($patron, $ruta)){
+            $datos = json_decode(file_get_contents('php://input'));
+            $result = ControlUsuarios::actualizarCorreo($datos->nuevoCorreo,$datos->id);
+
+            if ($result == -1) {
+                echo json_encode($respuesta->error_210());
+            } else {
+    
+                echo $result;
+            }
+        }
+    }
+
 }

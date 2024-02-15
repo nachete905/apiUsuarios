@@ -22,7 +22,7 @@ class ControlUsuarios
     }
     public static function altaCliente($nombre, $apellido1, $apellido2, $correo, $password, $dni = null, $pais = null, $genero = null, $fecha_nacimiento = null, $direccion = null, $notificaciones = null, $id = null)
     {
-        $result =  Modelo::insertarUsuario($nombre, $apellido1, $apellido2, $correo, $password, $dni, $pais, $genero, $fecha_nacimiento, $direccion, $notificaciones, $id);
+        $result =  Modelo::insertarUsuario($nombre, $apellido1, $apellido2, $correo, $password, $dni = null, $pais = null, $genero = null, $fecha_nacimiento = null, $direccion = null, $notificaciones = null, $id = null);
         if ($result === -1) {
             return -1;
         } else {
@@ -37,6 +37,30 @@ class ControlUsuarios
         } else {
             return json_encode($result);
         }
+    }
+
+    public static function actualizarNombre($nuevoNombre, $id){
+        $result = Modelo::actualizarNombre($nuevoNombre, $id);
+        if ($result === -1) {
+            return -1;
+          } else {
+            // si la actualizaciòn es correcta devolver correcta sino incorrecta
+            if ($result === true) {
+              return '{"actualizacion": "correcta"}';
+            }
+          }
+    }
+
+    public static function actualizarCorreo($nuevoCorreo, $id){
+        $result = Modelo::actualizarCorreo($nuevoCorreo, $id);
+        if ($result === -1) {
+            return -1;
+          } else {
+            // si la actualizaciòn es correcta devolver correcta sino incorrecta
+            if ($result === true) {
+              return '{"actualizacion": "correcta"}';
+            }
+          }
     }
 
     public static function login($nombre, $pswd){

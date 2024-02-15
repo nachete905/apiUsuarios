@@ -110,22 +110,72 @@ class Modelo extends BBDD
         }
     }
 
-    public static function login($correo, $pswd){
-        if ($correo != "undefined" && $pswd != "undefined") {   
-            $conexion = BBDD::conectar();
-            $sql = $conexion->prepare("SELECT id FROM usuario WHERE correo = ? AND password = ?");
-            $sql->bindParam(1,$correo,PDO::PARAM_STR);
-            $sql->bindParam(2,$pswd,PDO::PARAM_STR);
-            $sql->execute();
+    public static function actualizarNombre($nuevoNombre,$id){
 
-            $re = $sql->fetch(PDO::FETCH_ASSOC);
-            if ($re != false) {  
-                return "correcto";
-            } else {
-                return "incorrecto";
+        $conexion = BBDD::conectar();
+        if($nuevoNombre != null && $id != null ){
+            $sql = $conexion->prepare("UPDATE usuario SET nombre = ? WHERE id = ?");
+            $sql->bindParam(1, $nuevoNombre, PDO::PARAM_STR);
+            $sql->bindParam(2, $id, PDO::PARAM_INT);
+
+            if ($sql->execute()) {
+                header('HTTP/1.1 200 Nombre actualizado');
+            }else{
+                header('HTTP/1.1 404 Error al actualizar el nombre');
             }
         }else{
             return -1;
         }
     }
-}
+    
+    public static function actualizarCorreo($nuevoCorreo,$id){
+
+        $conexion = BBDD::conectar();
+        if($nuevoCorreo != null && $id != null ){
+            $sql = $conexion->prepare("UPDATE usuario SET correo = ? WHERE id = ?");
+            $sql->bindParam(1, $nuevoCorreo, PDO::PARAM_STR);
+            $sql->bindParam(2, $id, PDO::PARAM_INT);
+
+            if ($sql->execute()) {
+                header('HTTP/1.1 200 Correo actualizado');
+            }else{
+                header('HTTP/1.1 404 Error al actualizar el correo');
+            }
+        }else{
+            return -1;
+        }
+    }
+
+
+    public static function login($nombre, $password) {
+        $conexion = BBDD::conectar();
+        if ($nombre != "undefined" && $password != "undefined") {
+            //preparar sentencia para comprobar si el usuario existe
+            $result = $conexion->prepare("SELECT id FROM alumnos WHERE nombre=? AND password=?");
+            $result->bindParam(1, $nombre, PDO::PARAM_STR);
+            $result->bindParam(2, $password, PDO::PARAM_STR);
+            $result->execute();
+            // obtenemos el resultado
+            $re = $result->fetch(PDO::FETCH_ASSOC);
+            // comprobamos el resultado
+            if ($re !== false) {
+                $id = $re['id'];
+                // comprobamos si es admin
+                $res = $conexion->prepare("SELECT tipo FROM tipousuario WHERE id = ?");
+                $res->bindParam(1, $id, PDO::PARAM_INT);
+                $res->execute();
+                // obtenemos el resultado
+                $comprobar = $res->fetchAll(PDO::FETCH_ASSOC);
+                if ($comprobar !== false) {
+                    return $comprobar;
+                } else {
+                    return "No es admin";
+                }
+            } else {
+                return "incorrecto";
+            }
+        } else {
+            return -1;
+        }
+    }
+}    
