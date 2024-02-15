@@ -122,6 +122,8 @@ if(strpos($ruta, '/apiUsuarios/actualizarNombre') === 0){
                 echo $result;
             }
         }
+    }else {
+        echo json_encode($respuesta->error_405());
     }
 }
 
@@ -139,6 +141,8 @@ if(strpos($ruta, '/apiUsuarios/actualizarCorreo') === 0){
                 echo $result;
             }
         }
+    }else{
+        echo json_encode($respuesta->error_405());
     }
 
 }
