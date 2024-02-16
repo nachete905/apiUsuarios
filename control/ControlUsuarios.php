@@ -22,7 +22,7 @@ class ControlUsuarios
     }
     public static function altaCliente($nombre, $apellido1, $apellido2, $correo, $password, $dni = null, $pais = null, $genero = null, $fecha_nacimiento = null, $direccion = null, $notificaciones = null, $id = null)
     {
-        $result =  Modelo::insertarUsuario($nombre, $apellido1, $apellido2, $correo, $password, $dni = null, $pais = null, $genero = null, $fecha_nacimiento = null, $direccion = null, $notificaciones = null, $id = null);
+        $result =  Modelo::insertarUsuario($nombre, $apellido1, $apellido2, $correo, $password, $dni, $pais, $genero, $fecha_nacimiento, $direccion, $notificaciones, $id);
         if ($result === -1) {
             return -1;
         } else {
@@ -39,8 +39,8 @@ class ControlUsuarios
         }
     }
 
-    public static function actualizarNombre($nuevoNombre, $id){
-        $result = Modelo::actualizarNombre($nuevoNombre, $id);
+    public static function actualizarNombre($nombre, $id){
+        $result = Modelo::actualizarNombre($nombre, $id);
         if ($result === -1) {
             return -1;
           } else {
@@ -51,8 +51,8 @@ class ControlUsuarios
           }
     }
 
-    public static function actualizarCorreo($nuevoCorreo, $id){
-        $result = Modelo::actualizarCorreo($nuevoCorreo, $id);
+    public static function actualizarCorreo($correo, $id){
+        $result = Modelo::actualizarCorreo($correo, $id);
         if ($result === -1) {
             return -1;
           } else {

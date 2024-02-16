@@ -19,6 +19,12 @@ class Response{
         $this->response["result"] = "no encontrado";
         return $this->response;
     }
+
+    public function error_400(){
+        $this->response["status"] = "error";
+        $this->response["result"] = "solicitud incorrecta";
+        return $this->response;
+    }
     
 
 }

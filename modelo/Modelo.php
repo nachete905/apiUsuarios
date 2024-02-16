@@ -67,10 +67,9 @@ class Modelo extends BBDD
             return -1;
         }
     }
-
     public static function insertarUsuario($nombre, $apellido1, $apellido2, $correo, $password, $dni = null, $pais = null, $genero = null, $fecha_nacimiento = null, $direccion = null, $notificaciones = null, $id = null)
     {
-
+    
         $conexion = BBDD::conectar();
         $sql = $conexion->prepare("INSERT INTO usuario (correo, password, nombre, apellido1, apellido2, dni, pais, genero, fecha_nacimiento, direccion, notificaciones)
         VALUES (:correo, :password, :nombre, :apellido1, :apellido2, :dni, :pais, :genero, :fecha_nacimiento, :direccion, :notificaciones)");
@@ -85,14 +84,13 @@ class Modelo extends BBDD
         $sql->bindParam(":fecha_nacimiento", $fecha_nacimiento);
         $sql->bindParam(":direccion", $direccion);
         $sql->bindParam(":notificaciones", $notificaciones);
-
+    
         if ($sql->execute()) {
             header('HTTP/1.1 200 Cliente creado');
         } else {
             header('HTTP/1.1 404 Error al crear el cliente');
         }
     }
-
     public static function borrarUsuario($id)
     {
 
@@ -110,12 +108,12 @@ class Modelo extends BBDD
         }
     }
 
-    public static function actualizarNombre($nuevoNombre,$id){
+    public static function actualizarNombre($nombre,$id){
 
         $conexion = BBDD::conectar();
-        if($nuevoNombre != null && $id != null ){
+        if($nombre != null && $id != null ){
             $sql = $conexion->prepare("UPDATE usuario SET nombre = ? WHERE id = ?");
-            $sql->bindParam(1, $nuevoNombre, PDO::PARAM_STR);
+            $sql->bindParam(1, $nombre, PDO::PARAM_STR);
             $sql->bindParam(2, $id, PDO::PARAM_INT);
 
             if ($sql->execute()) {
@@ -128,12 +126,12 @@ class Modelo extends BBDD
         }
     }
     
-    public static function actualizarCorreo($nuevoCorreo,$id){
+    public static function actualizarCorreo($correo,$id){
 
         $conexion = BBDD::conectar();
-        if($nuevoCorreo != null && $id != null ){
+        if($correo != null && $id != null ){
             $sql = $conexion->prepare("UPDATE usuario SET correo = ? WHERE id = ?");
-            $sql->bindParam(1, $nuevoCorreo, PDO::PARAM_STR);
+            $sql->bindParam(1, $correo, PDO::PARAM_STR);
             $sql->bindParam(2, $id, PDO::PARAM_INT);
 
             if ($sql->execute()) {
