@@ -63,13 +63,13 @@ class ControlUsuarios
           }
     }
 
-    public static function inicioSesion($correo, $pswd){
+    public static function inicioSesion($correo, $pswd) {
         $result = Modelo::login($correo, $pswd);
-
+    
         if ($result == -1) {
             return -1;
         } else {
-            return json_encode($result); 
+            return $result; 
         }
     }
 }

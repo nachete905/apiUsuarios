@@ -89,14 +89,26 @@ if (strpos($ruta, '/apiUsuarios/login') === 0) {
     if ($metodo == 'POST') {
         $patron = '/^\/apiUsuarios\/login/';
         if (preg_match($patron, $ruta)) {
-
             $correo = $_POST['correo'];
             $pswd = $_POST['pswd'];
 
             $result = ControlUsuarios::inicioSesion($correo, $pswd);
-            
-
-            if ($result == -1) {
+            if ($result == 1) {
+                session_start(); 
+                $_SESSION['admin'] = $correo;
+                $_SESSION['start'] = time();
+                $_SESSION['expire'] = $_SESSION['start'] + (1*60);
+                echo "Sesión iniciada";
+                if (isset($_SESSION['start']) && time() > $_SESSION['expire']) {
+                    session_destroy(); 
+                    header("Tu sesión ha expirado"); 
+                }
+                
+            }
+           elseif($result == 2){
+                echo "no eres admin";
+            }
+             elseif ($result == -1) {
                 echo json_encode($respuesta->error_210());
             } else {
                 echo $result;
@@ -106,6 +118,7 @@ if (strpos($ruta, '/apiUsuarios/login') === 0) {
         echo json_encode($respuesta->error_405());
     }
 }
+
 
 if (strpos($ruta, '/apiUsuarios/actualizarNombre') === 0) {
     if ($metodo == 'POST') {

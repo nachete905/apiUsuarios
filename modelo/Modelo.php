@@ -147,17 +147,17 @@ class Modelo extends BBDD
 
     public static function login($correo, $pswd) {
         $conexion = BBDD::conectar();
-        $sql ="SELECT id, tipoUsuario FROM usuario WHERE correo=? AND password=?";
-
+        $sql ="SELECT tipoUsuario FROM usuario WHERE correo=? AND password=?";
+    
         if ($correo != "undefined" && $pswd != "undefined") {
             $sql = $conexion->prepare($sql);
             $sql->bindParam(1, $correo, PDO::PARAM_STR);
             $sql->bindParam(2, $pswd, PDO::PARAM_STR);
             $sql->execute();
-
+    
             $result = $sql->fetch(PDO::FETCH_ASSOC);
             if ($result) {
-                $tipo = $result['tipoUsuario'];   
+                $tipo = $result['tipoUsuario'];
                 return $tipo;
             } else {   
                 return -1; // Usuario no encontrado
