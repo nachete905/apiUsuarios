@@ -87,12 +87,14 @@ if (strpos($ruta, '/apiUsuarios/delete') === 0) {
 
 if (strpos($ruta, '/apiUsuarios/login') === 0) {
     if ($metodo == 'POST') {
-        $patron = '/^\/apiUsuarios\/login\/$/';
+        $patron = '/^\/apiUsuarios\/login/';
         if (preg_match($patron, $ruta)) {
 
             $correo = $_POST['correo'];
             $pswd = $_POST['pswd'];
-            $result = ControlUsuarios::login($correo, $pswd);
+
+            $result = ControlUsuarios::inicioSesion($correo, $pswd);
+            
 
             if ($result == -1) {
                 echo json_encode($respuesta->error_210());

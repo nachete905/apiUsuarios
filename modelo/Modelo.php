@@ -72,18 +72,18 @@ class Modelo extends BBDD
     
         $conexion = BBDD::conectar();
         $sql = $conexion->prepare("INSERT INTO usuario (correo, password, nombre, apellido1, apellido2, dni, pais, genero, fecha_nacimiento, direccion, notificaciones)
-        VALUES (:correo, :password, :nombre, :apellido1, :apellido2, :dni, :pais, :genero, :fecha_nacimiento, :direccion, :notificaciones)");
+        VALUES (:correo, :password, :nombre, :apellido1, :apellido2,");
         $sql->bindParam(":nombre", $nombre);
         $sql->bindParam(":apellido1", $apellido1);
         $sql->bindParam(":apellido2", $apellido2);
         $sql->bindParam(":correo", $correo);
         $sql->bindParam(":password", $password);
         $sql->bindParam(":dni", $dni);
-        $sql->bindParam(":pais", $pais);
-        $sql->bindParam(":genero", $genero);
-        $sql->bindParam(":fecha_nacimiento", $fecha_nacimiento);
-        $sql->bindParam(":direccion", $direccion);
-        $sql->bindParam(":notificaciones", $notificaciones);
+        // $sql->bindParam(":pais", $pais);
+        // $sql->bindParam(":genero", $genero);
+        // $sql->bindParam(":fecha_nacimiento", $fecha_nacimiento);
+        // $sql->bindParam(":direccion", $direccion);
+        // $sql->bindParam(":notificaciones", $notificaciones);
     
         if ($sql->execute()) {
             header('HTTP/1.1 200 Cliente creado');
@@ -145,35 +145,30 @@ class Modelo extends BBDD
     }
 
 
-    public static function login($nombre, $password) {
+    public static function login($correo, $pswd) {
         $conexion = BBDD::conectar();
-        if ($nombre != "undefined" && $password != "undefined") {
-            //preparar sentencia para comprobar si el usuario existe
-            $result = $conexion->prepare("SELECT id FROM alumnos WHERE nombre=? AND password=?");
-            $result->bindParam(1, $nombre, PDO::PARAM_STR);
-            $result->bindParam(2, $password, PDO::PARAM_STR);
-            $result->execute();
-            // obtenemos el resultado
-            $re = $result->fetch(PDO::FETCH_ASSOC);
-            // comprobamos el resultado
-            if ($re !== false) {
-                $id = $re['id'];
-                // comprobamos si es admin
-                $res = $conexion->prepare("SELECT tipo FROM tipousuario WHERE id = ?");
-                $res->bindParam(1, $id, PDO::PARAM_INT);
-                $res->execute();
-                // obtenemos el resultado
-                $comprobar = $res->fetchAll(PDO::FETCH_ASSOC);
-                if ($comprobar !== false) {
-                    return $comprobar;
-                } else {
-                    return "No es admin";
-                }
-            } else {
-                return "incorrecto";
+        $sql ="SELECT id, tipoUsuario FROM usuario WHERE correo=? AND password=?";
+
+        if ($correo != "undefined" && $pswd != "undefined") {
+            $sql = $conexion->prepare($sql);
+            $sql->bindParam(1, $correo, PDO::PARAM_STR);
+            $sql->bindParam(2, $pswd, PDO::PARAM_STR);
+            $sql->execute();
+
+            $result = $sql->fetch(PDO::FETCH_ASSOC);
+            if ($result) {
+                $tipo = $result['tipoUsuario'];   
+                return $tipo;
+            } else {   
+                return -1; // Usuario no encontrado
             }
         } else {
-            return -1;
+            return -1; // Datos de inicio de sesión no válidos
         }
     }
+
+
+    
+    
+   
 }    
