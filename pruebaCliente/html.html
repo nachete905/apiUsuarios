@@ -9,24 +9,18 @@
     <button onclick="login()">LOG</button>
     <button onclick="datos()">DAT</button>
     <script>
+      function login() {
+        fetch("http://localhost/apiUsuarios/login")
+          .then((response) => response.json())
+          .then((data) => console.log(data))
+          .catch((error) => console.error(error));
+      }
 
-        function login(){
-
-
-             fetch('http://localhost/apiUsuarios/login')
-
-                .then(response => response.json())
-                .then(data => console.log(data))
-                .catch(error => console.error(error));
-        }
-
-        function datos(){
-            fetch('http://localhost/apiUsuarios/id/25')
-                .then(response => response.json())
-                .then(data => console.log(data))
-        }
-
-        
+      function datos() {
+        fetch("http://localhost/apiUsuarios/id/25")
+          .then((response) => response.json())
+          .then((data) => console.log(data));
+      }
     </script>
   </body>
 </html>

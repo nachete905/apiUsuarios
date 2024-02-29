@@ -20,6 +20,8 @@ class ControlUsuarios
                 $_SESSION["admin"] = $correo;
             }else{
                 $_SESSION["user"] = $correo;
+                session_destroy();
+               
             }
             return $result;
         }
@@ -31,8 +33,8 @@ class ControlUsuarios
         session_start();
         $admin = $_SESSION["admin"];
         var_dump($admin);
-        if (isset($admin) && $admin != null) {
-            if ($id == null) {
+        if (isset($admin) && $admin != "undefined") {
+            if ($id == "undefined") {
                 return json_encode(Modelo::consultarUsuarios());
             } else {
                 $resultado = json_encode(Modelo::consultarUsuariosID($id));
