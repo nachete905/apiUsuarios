@@ -2,14 +2,45 @@
 
 class ControlUsuarios
 {
+
+    public static function inicioSesion($correo, $pswd)
+    {
+
+        $result = Modelo::login($correo, $pswd);
+
+        if ($result == -1) {
+            return -1;
+        } else {
+            session_start();
+
+            $_SESSION["start"] = true;
+            $fianlizar = $_SESSION['expire'] = time() + 15 ;
+            echo $fianlizar;
+            if ($result == 1) {
+                $_SESSION["admin"] = $correo;
+            }else{
+                $_SESSION["user"] = $correo;
+                session_destroy();
+               
+            }
+            return $result;
+        }
+    }
+
+
     public static function obtenerUsuarios($id = null)
     {
-        if ($id == null) {
-            return json_encode(Modelo::consultarUsuarios());
-        } else {
-            $resultado = json_encode(Modelo::consultarUsuariosID($id));
-            return $resultado;
-            var_dump($resultado);
+        session_start();
+        $admin = $_SESSION["admin"];
+        var_dump($admin);
+        if (isset($admin) && $admin != "undefined") {
+            if ($id == "undefined") {
+                return json_encode(Modelo::consultarUsuarios());
+            } else {
+                $resultado = json_encode(Modelo::consultarUsuariosID($id));
+                return $resultado;
+                var_dump($resultado);
+            }
         }
     }
     public static function obtenerUsuariosNombre($nombre = null)
@@ -39,37 +70,29 @@ class ControlUsuarios
         }
     }
 
-    public static function actualizarNombre($nombre, $id){
+    public static function actualizarNombre($nombre, $id)
+    {
         $result = Modelo::actualizarNombre($nombre, $id);
         if ($result === -1) {
             return -1;
-          } else {
+        } else {
             // si la actualizaciòn es correcta devolver correcta sino incorrecta
             if ($result === true) {
-              return '{"actualizacion": "correcta"}';
+                return '{"actualizacion": "correcta"}';
             }
-          }
+        }
     }
 
-    public static function actualizarCorreo($correo, $id){
+    public static function actualizarCorreo($correo, $id)
+    {
         $result = Modelo::actualizarCorreo($correo, $id);
         if ($result === -1) {
             return -1;
-          } else {
+        } else {
             // si la actualizaciòn es correcta devolver correcta sino incorrecta
             if ($result === true) {
-              return '{"actualizacion": "correcta"}';
+                return '{"actualizacion": "correcta"}';
             }
-          }
-    }
-
-    public static function inicioSesion($correo, $pswd) {
-        $result = Modelo::login($correo, $pswd);
-    
-        if ($result == -1) {
-            return -1;
-        } else {
-            return $result; 
         }
     }
 }
