@@ -20,9 +20,9 @@ class ControlUsuarios
             return json_encode(Modelo::consultarUsuariosNombre($nombre));
         }
     }
-    public static function altaCliente($nombre, $apellido1, $apellido2, $correo, $password, $dni = null, $pais = null, $genero = null, $fecha_nacimiento = null, $direccion = null, $notificaciones = null, $id = null)
+    public static function altaCliente( $correo, $password, $password2)
     {
-        $result =  Modelo::insertarUsuario($nombre, $apellido1, $apellido2, $correo, $password, $dni, $pais, $genero, $fecha_nacimiento, $direccion, $notificaciones, $id);
+        $result =  Modelo::insertarUser($correo, $password, $password2);
         if ($result === -1) {
             return -1;
         } else {

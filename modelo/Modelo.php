@@ -67,7 +67,7 @@ class Modelo extends BBDD
             return -1;
         }
     }
-    public static function insertarUsuario($nombre, $apellido1, $apellido2, $correo, $password, $dni = null, $pais = null, $genero = null, $fecha_nacimiento = null, $direccion = null, $notificaciones = null, $id = null)
+    public static function insertarUsuarioCompleto($nombre, $apellido1, $apellido2, $correo, $password, $dni = null, $pais = null, $genero = null, $fecha_nacimiento = null, $direccion = null, $notificaciones = null, $id = null)
     {
     
         $conexion = BBDD::conectar();
@@ -91,6 +91,8 @@ class Modelo extends BBDD
             header('HTTP/1.1 404 Error al crear el cliente');
         }
     }
+
+
     public static function borrarUsuario($id)
     {
 
@@ -143,13 +145,31 @@ class Modelo extends BBDD
             return -1;
         }
     }
+    public static function insertarUser($correo, $password, $password2){
+        $conexion = BBDD::conectar();
+        $sql = $conexion->prepare("INSERT INTO usuario (correo, password) VALUES (:correo, :password)");
+
+        $sql->bindParam(":correo", $correo);
+        $sql->bindParam(":password", $password);
+
+        if($password === $password2){
+            if($sql->execute()){
+                header('HTTP/1.1 200 Cliente creado');
+            }else{
+                return -1;
+            }
+        }
+            
+        
 
 
-    public static function login($correo, $pswd) {
+    }
+
+    public static function login($correo, $password) {
         $conexion = BBDD::conectar();
         $sql ="SELECT tipoUsuario FROM usuario WHERE correo=? AND password=?";
     
-        if ($correo != "undefined" && $pswd != "undefined") {
+        if ($correo != "undefined" && $password != "undefined") {
             $sql = $conexion->prepare($sql);
             $sql->bindParam(1, $correo, PDO::PARAM_STR);
             $sql->bindParam(2, $pswd, PDO::PARAM_STR);
@@ -157,10 +177,10 @@ class Modelo extends BBDD
     
             $result = $sql->fetch(PDO::FETCH_ASSOC);
             if ($result) {
-                $tipo = $result['tipoUsuario'];
-                return $tipo;
+                header('HTTP/1.1 200 cliente correcto');
+                
             } else {   
-                return -1; // Usuario no encontrado
+                return -2; // Usuario no encontrado
             }
         } else {
             return -1; // Datos de inicio de sesión no válidos

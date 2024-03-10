@@ -36,20 +36,12 @@ if (strpos($ruta, '/apiUsuarios/insert') === 0) {
     if ($metodo == 'POST') {
         $patron = '/^\/apiUsuarios\/insert/';
         if (preg_match($patron, $ruta)) {
-            if (isset($_POST['nombre']) && isset($_POST['apellido1']) && isset($_POST['apellido2']) && isset($_POST['correo']) && isset($_POST['password']) || isset($_POST['dni']) || isset($_POST['pais']) ||isset($_POST['genero']) || isset($_POST['fecha_nacimiento']) || isset($_POST['direccion']) ||isset($_POST['notificaciones'])) {
-                $nombre = $_POST['nombre'];
-                $apellido1 = $_POST['apellido1'];
-                $apellido2 = $_POST['apellido2'];
+            if (isset($_POST['correo']) && isset($_POST['password']) && isset($_POST["password2"])) {
+             
                 $correo = $_POST['correo'];
                 $password = $_POST['password'];
-                $dni = $_POST['dni'];
-                $pais = $_POST['pais'];
-                $genero = $_POST['genero'];
-                $fecha_nacimiento = $_POST['fecha_nacimiento'];
-                $direccion = $_POST['direccion'];
-                $notificaciones = $_POST['notificaciones'];
-
-                $result = ControlUsuarios::altaCliente($nombre, $apellido1, $apellido2, $correo, $password, $dni, $pais, $genero, $fecha_nacimiento, $direccion, $notificacione);
+                $password2 = $_POST['password2'];
+                $result = ControlUsuarios::altaCliente($correo, $password, $password2);
 
 
                 if ($result == -1) {
